@@ -8,4 +8,14 @@ thumbnail: "/images/posts/Dev/nextjs.png"
 
 Header 컴포넌트에 언어선택 드롭다운을 붙이려던 그때! 나타난 오류
 
+:압정: 순환 참조 흐름
+Dropdown → Column (import { Column } from '@/styles/layouts/Layout')
+Layout.tsx → withDefaultProps (import { withDefaultProps } from '@/hoc')
+hoc/index.tsx → withLayout (import { withLayout } from '@/hoc/withLayout')
+withLayout.tsx → BaseLayout (import { BaseLayout } from '@/components/layouts')
+BaseLayout.tsx → Column (import { Column } from '@/styles/layouts/Layout')
+:오른쪽을_가리키는_손_모양: 결국 Column이 BaseLayout을 참조하고, BaseLayout이 다시 Column을 참조하는 순환 참조 발생!
+
+
+
 ---
