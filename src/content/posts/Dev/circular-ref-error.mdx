@@ -9,6 +9,9 @@ thumbnail: "/images/posts/Dev/nextjs.png"
 Header 컴포넌트에 언어선택 드롭다운을 붙이려던 그때! 나타난 오류이다.
 Column is not defined, Column이 정의되지 않은 상태에서 사용하려고 했다는 오류였다.
 하지만 난 Column을 import 해온 걸요,,
+결론적으로는, 모듈 export 방식에 대한 이해가 필요했다! 사실 지금까지는 export default ~ 로 아무 생각없이 추출해서 사용해왔지만 이 방식에 문제가 있음을 인지하지 못했다.
+
+그렇다면 Named Export와 Default Export의 차이점에 대해 알아보자!
 
 :압정: 순환 참조 흐름
 Dropdown → Column (import { Column } from '@/styles/layouts/Layout')
