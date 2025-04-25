@@ -13,6 +13,12 @@ Column is not defined, Column이 정의되지 않은 상태에서 사용하려�
 
 그렇다면 Named Export와 Default Export의 차이점에 대해 알아보자!
 
+---
+
+Named Export는 index.tsx 같은 파일을 생성하여 여러 변수, 함수 등을 한꺼번에 export하는 방식을 말한다. 이 방식으로 export를 하면 해당 모듈을 import 해오는 파일에서는 중괄호로 감싸서 불러오게 된다.
+
+반면, Default Export는 하나의 파일 내에서 하나의 변수, 함수 등 하나의 모듈만을 export할 수 있다. 예를 들면 export default CloseButton ~ 처럼!
+
 :압정: 순환 참조 흐름
 Dropdown → Column (import { Column } from '@/styles/layouts/Layout')
 Layout.tsx → withDefaultProps (import { withDefaultProps } from '@/hoc')
