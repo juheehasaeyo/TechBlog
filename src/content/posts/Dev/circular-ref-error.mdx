@@ -15,7 +15,7 @@ Column is not defined, Column이 정의되지 않은 상태에서 사용하려�
 
 ---
 
-Named Export는 index.tsx 같은 파일을 생성하여 여러 변수, 함수 등을 한꺼번에 export하는 방식을 말한다. 이 방식으로 export를 하면 해당 모듈을 import 해오는 파일에서는 중괄호로 감싸서 불러오게 된다.
+Named Export는 index.tsx 같은 파일을 생성하여 여러 변수, 함수 등을 한꺼번에 export하는 방식을 말한다. 이 방식으로 export를 하면 해당 모듈을 import 해오는 파일에서는 {중괄호}로 감싸서 불러오게 된다.
 
 반면, Default Export는 하나의 파일 내에서 하나의 변수, 함수 등 하나의 모듈만을 export할 수 있다. 예를 들면 export default CloseButton ~ 처럼!
 
@@ -27,6 +27,9 @@ withLayout.tsx → BaseLayout (import { BaseLayout } from '@/components/layouts'
 BaseLayout.tsx → Column (import { Column } from '@/styles/layouts/Layout')
 :오른쪽을_가리키는_손_모양: 결국 Column이 BaseLayout을 참조하고, BaseLayout이 다시 Column을 참조하는 순환 참조 발생!
 
+hoc/index.tsx를 보면
+export { withAuth, withDefaultProps, withLayout };
 
+이 3개 모듈을 묶어서 Named export를 하고있는데, 이를 각 모듈별로 export 하도록 수정하니 해결되었다!!!
 
 ---
