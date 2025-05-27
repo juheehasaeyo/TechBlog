@@ -19,6 +19,11 @@ Named Export는 index.tsx 같은 파일을 생성하여 여러 변수, 함수 �
 
 반면, Default Export는 하나의 파일 내에서 하나의 변수, 함수 등 하나의 모듈만을 export할 수 있다. 예를 들면 export default CloseButton ~ 처럼!
 
+결국 hoc/index.tsx 에서 export { withAuth, withDefaultProps, withLayout }; 로 이 3개 모듈을 묶어서 Named export를 하고있어서 생긴 문제였다.
+문제 해결을 위해 각각의 모듈별로 Default Export 하도록 수정하니 에러를 해결할 수 있었다.
+
+요약하자면 아래와 같다.
+
 :압정: 순환 참조 흐름
 Dropdown → Column (import { Column } from '@/styles/layouts/Layout')
 Layout.tsx → withDefaultProps (import { withDefaultProps } from '@/hoc')
@@ -26,11 +31,6 @@ hoc/index.tsx → withLayout (import { withLayout } from '@/hoc/withLayout')
 withLayout.tsx → BaseLayout (import { BaseLayout } from '@/components/layouts')
 BaseLayout.tsx → Column (import { Column } from '@/styles/layouts/Layout')
 :오른쪽을_가리키는_손_모양: 결국 Column이 BaseLayout을 참조하고, BaseLayout이 다시 Column을 참조하는 순환 참조 발생!
-
-hoc/index.tsx를 보면
-export { withAuth, withDefaultProps, withLayout };
-
-이 3개 모듈을 묶어서 Named export를 하고있는데, 이를 각 모듈별로 export 하도록 수정하니 해결되었다!!!
 
 리액트 공식문서(https://ko.react.dev/learn/importing-and-exporting-components)를 보면 컴포넌트 import, export 관련 내용이 있다. 자세히 나와있으니 함께 읽어보면 좋을 듯!
 
