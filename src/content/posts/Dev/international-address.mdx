@@ -6,7 +6,19 @@ keywords: [배송지 관리, useForm, useController]
 thumbnail: "/images/posts/Dev/nextjs.png"
 ---
 
+오늘은 배송지 등록/수정/삭제를 구현한 포스트입니다!
 
+useForm, useController 사용해서 AddressInput 컴포넌트를 만들었고, 각 국가별 요구 정책에 따라 배송지 폼 모달창을 제작했습니다.
+
+배송지 등록/수정 모달창의 디자인이 유사해 이를 통합하기 위해 mode의 create | edit으로..
+
+배송지 변경 모달창 제작
+한국: Daum 주소검색 api 연결, 모바일/pc 뷰에 따라 팝업/임베드 형식
+중국: 신분증번호 입력란 및 우편번호 검색 api 연결(china-division 패키지)
+일본: 우편번호 검색 api 연결
+브라질: CPF란 재검토 요청 및 제거
+태국, 대만: 국가별 주의사항 적용
+그 외 국가: 국가별 유효성검사 정리 파일 제작
 
 ---
 
