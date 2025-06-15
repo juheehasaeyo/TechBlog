@@ -7,13 +7,14 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 interface PostProps {
-  params: {
+  params: Promise<{
     slug: string[];
-  };
+  }>;
 }
 
 const getPostFromParams = async (params: PostProps["params"]) => {
-  const slug = params?.slug?.join("/");
+  const resolvedParams = await params;
+  const slug = resolvedParams?.slug?.join("/");
   const post = allPosts.find((post) => post.slugAsParams === slug);
 
   if (!post) {
@@ -44,7 +45,7 @@ export const generateMetadata = async ({ params }: PostProps): Promise<Metadata>
   };
 };
 
-export const generateStaticParams = async (): Promise<PostProps["params"][]> => {
+export const generateStaticParams = async (): Promise<{ slug: string[] }[]> => {
   return allPosts.map((post) => ({
     slug: post.slugAsParams.split("/"),
   }));
