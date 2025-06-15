@@ -1,38 +1,42 @@
 ---
 title: Next.js 순환참조 에러 해결하기
-description: 넥제 순환참조 트러블슈팅 포스트
+description: Next.js 순환참조 트러블슈팅 포스트
 date: "2025-03-20"
-keywords: [Next.js, 순환참조, 트러블 슈팅]
+keywords: [Next.js, 순환참조, 트러블슈팅]
 thumbnail: "/images/posts/Dev/nextjs.png"
 ---
 
-"~~~" is not initialized
-Header 컴포넌트에 언어선택 드롭다운을 붙이려던 그때! 나타난 오류이다.
-Column is not defined, Column이 정의되지 않은 상태에서 사용하려고 했다는 오류였다.
-하지만 난 Column을 import 해온 걸요,,
-결론적으로는, 모듈 export 방식에 대한 이해가 필요했다! 사실 지금까지는 export default ~ 로 아무 생각없이 추출해서 사용해왔지만 이 방식에 문제가 있음을 인지하지 못했다.
+"~~~ is not initialized"  
+Header 컴포넌트에 언어 선택 드롭다운을 붙이려던 그때, 오류가 발생했다!  
+`Column is not defined`, Column이 정의되지 않은 상태에서 사용되었다는 오류였지만, 분명 import를 했는데도 이런 문제가 생겼다.
 
+결론적으로는 **모듈의 export 방식에 대한 이해 부족**이 문제였다.  
+지금까지 아무 생각 없이 `export default`를 사용해왔는데, 이 방식이 순환 참조를 유발하고 있었다.
 그렇다면 Named Export와 Default Export의 차이점에 대해 알아보자!
 
 ---
 
-Named Export는 index.tsx 같은 파일을 생성하여 여러 변수, 함수 등을 한꺼번에 export하는 방식을 말한다. 이 방식으로 export를 하면 해당 모듈을 import 해오는 파일에서는 {중괄호}로 감싸서 불러오게 된다.
+## Named Export vs Default Export
 
-반면, Default Export는 하나의 파일 내에서 하나의 변수, 함수 등 하나의 모듈만을 export할 수 있다. 예를 들면 export default CloseButton ~ 처럼!
+**Named Export**는 `index.tsx` 같은 파일에서 여러 모듈을 한꺼번에 내보낼 때 사용한다.  
+이때는 import할 때 반드시 **중괄호**(`{}`)로 감싸서 불러와야 한다.
 
+반면, **Default Export**는 파일당 하나의 모듈만 내보낼 수 있으며,  
+`export default CloseButton`처럼 사용한다. import 시 중괄호가 필요 없다. <br/>
 결국 hoc/index.tsx 에서 export { withAuth, withDefaultProps, withLayout }; 로 이 3개 모듈을 묶어서 Named export를 하고있어서 생긴 문제였다.
-문제 해결을 위해 각각의 모듈별로 Default Export 하도록 수정하니 에러를 해결할 수 있었다.
+문제 해결을 위해 각각의 모듈별로 Default Export 하도록 수정하니 에러를 해결할 수 있었다. <br/>
 
 요약하자면 아래와 같다.
 
-:압정: 순환 참조 흐름
-Dropdown → Column (import { Column } from '@/styles/layouts/Layout')
-Layout.tsx → withDefaultProps (import { withDefaultProps } from '@/hoc')
-hoc/index.tsx → withLayout (import { withLayout } from '@/hoc/withLayout')
-withLayout.tsx → BaseLayout (import { BaseLayout } from '@/components/layouts')
-BaseLayout.tsx → Column (import { Column } from '@/styles/layouts/Layout')
-:오른쪽을_가리키는_손_모양: 결국 Column이 BaseLayout을 참조하고, BaseLayout이 다시 Column을 참조하는 순환 참조 발생!
+📌 순환 참조 흐름 <br/>
+Dropdown → Column (import { Column } from '@/styles/layouts/Layout') <br/>
+Layout.tsx → withDefaultProps (import { withDefaultProps } from '@/hoc') <br/>
+hoc/index.tsx → withLayout (import { withLayout } from '@/hoc/withLayout') <br/>
+withLayout.tsx → BaseLayout (import { BaseLayout } from '@/components/layouts') <br/>
+BaseLayout.tsx → Column (import { Column } from '@/styles/layouts/Layout') <br/>
+➡️ 결국 Column이 BaseLayout을 참조하고, BaseLayout이 다시 Column을 참조하는 순환 참조 발생! <br/>
 
-리액트 공식문서(https://ko.react.dev/learn/importing-and-exporting-components)를 보면 컴포넌트 import, export 관련 내용이 있다. 자세히 나와있으니 함께 읽어보면 좋을 듯!
+
+`리액트 공식문서(https://ko.react.dev/learn/importing-and-exporting-components)`를 보면 컴포넌트 import, export 관련 내용이 있다. 자세히 나와있으니 함께 읽어보면 좋겠다!
 
 ---
