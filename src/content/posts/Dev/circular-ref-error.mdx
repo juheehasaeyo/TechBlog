@@ -33,13 +33,15 @@ export default withAuth;
 ```
 요약하자면 아래와 같다.
 
-📌 순환 참조 흐름 <br/>
-Dropdown → Column (import { Column } from '@/styles/layouts/Layout') <br/>
-Layout.tsx → withDefaultProps (import { withDefaultProps } from '@/hoc') <br/>
-hoc/index.tsx → withLayout (import { withLayout } from '@/hoc/withLayout') <br/>
-withLayout.tsx → BaseLayout (import { BaseLayout } from '@/components/layouts') <br/>
-BaseLayout.tsx → Column (import { Column } from '@/styles/layouts/Layout') <br/>
-➡️ 결국 Column이 BaseLayout을 참조하고, BaseLayout이 다시 Column을 참조하는 순환 참조 발생! <br/>
+```md
+📌 순환 참조 흐름
+Dropdown → Column (import { Column } from '@/styles/layouts/Layout')
+Layout.tsx → withDefaultProps (import { withDefaultProps } from '@/hoc')
+hoc/index.tsx → withLayout (import { withLayout } from '@/hoc/withLayout')
+withLayout.tsx → BaseLayout (import { BaseLayout } from '@/components/layouts')
+BaseLayout.tsx → Column (import { Column } from '@/styles/layouts/Layout')
+➡️ 결국 Column이 BaseLayout을 참조하고, BaseLayout이 다시 Column을 참조하는 순환 참조 발생!
+```
 
 
 `리액트 공식문서(https://ko.react.dev/learn/importing-and-exporting-components)`를 보면 컴포넌트 import, export 관련 내용이 있다. 자세히 나와있으니 함께 읽어보면 좋겠다!
