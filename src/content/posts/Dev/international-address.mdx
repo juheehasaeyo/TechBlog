@@ -8,7 +8,9 @@ thumbnail: "/images/posts/Dev/nextjs.jpg"
 
 React Hook Form과 **useForm**, **useController**를 활용해 **국가별 입력 정책을 반영한 배송지 등록/수정/삭제 폼을 구현한 포스트**입니다.
 
-배송지 등록/수정 모달은 디자인이 유사해 하나의 컴포넌트로 통합하고, `mode`를 `create | edit`으로 받아 분기 처리했다. 각 국가별 입력 요구사항(CPF, 신분증번호 등)은 조건부 렌더링과 정규식을 적용해 유효성 검사를 구성했다. 폼은 `control`, `setValue`를 props로 받아 `react-hook-form`과 연결되며, `handleNamePattern`을 통해 국가 코드에 따라 이름 필드 제한도 설정했다.
+배송지 등록/수정 모달은 디자인이 유사해 하나의 컴포넌트로 통합하고, `mode`를 `create | edit`으로 받아 분기 처리했다. 각 국가별 입력 요구사항(CPF, 신분증번호 등)은 조건부 렌더링과 정규식을 적용해 유효성 검사를 구성했다. 폼은 control, setValue를 props로 받아 **react-hook-form**과 연결되며, `handleNamePattern`을 통해 국가 코드에 따라 이름 필드 제한도 설정했다.
+
+>> 사진 첨부 예정
 
 공통 UI는 재사용하고, 국가별 정책은 별도 컴포넌트로 분리해 **가독성과 유지보수성**을 확보하였으며, 유효성 검사 로직도 국가별로 분기 처리하여 **사용자 경험을 개선**했다.
 
