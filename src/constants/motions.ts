@@ -30,7 +30,7 @@ export const categoryListVariants: Variants = {
 };
 
 export const headerVariants: Variants = {
-  initial: { height: "3rem" },
+  initial: { height: "2.5rem" },
   open: { height: "auto", transition: { height: { duration: 0.3 } } },
-  close: { height: "3rem", transition: { height: { duration: 0.3 } } },
+  close: { height: "2.5rem", transition: { height: { duration: 0.3 } } },
 };
