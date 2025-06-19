@@ -48,7 +48,7 @@ const MainPageHeader = ({ className }: MainPageHeaderProps) => {
       initial="initial"
       animate={controls}
     >
-      <div className="flex items-center justify-between w-full h-10 shrink-0">
+      <div className="flex items-center justify-between w-full min-h-[3rem] shrink-0">
         <MainLogo onClick={closeMenu} />
         <div className="flex justify-center items-center h-full desktop:hidden">
           <ThemeToggle className="px-2" />

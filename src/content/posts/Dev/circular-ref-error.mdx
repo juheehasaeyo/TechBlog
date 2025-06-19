@@ -6,13 +6,13 @@ keywords: [Next.js, 순환참조, 트러블슈팅]
 thumbnail: "/images/posts/Dev/nextjs.jpg"
 ---
 
-`Column is not defined`
+`Column is not defined`<br/>
 Header 컴포넌트에 언어 선택 드롭다운을 붙이려던 그때, 오류가 발생했다!  
 Column이 정의되지 않은 상태에서 사용되었다는 오류였지만 분명 import를 했는데도 이런 문제가 생겼다.
 
 결론적으로는 **모듈의 export 방식에 대한 이해 부족**이 문제였다.  
-지금까지 아무 생각 없이 `export default ~~~`를 사용해왔는데, 이 방식이 순환 참조를 유발하고 있었다.
-그렇다면 `Named Export`와 `Default Export`의 차이는 무엇이고, 어떤 상황에서 각각을 사용해야 할까?
+지금까지 아무 생각 없이 `export default ~~~`를 사용해왔는데, 이 방식이 순환 참조를 유발하고 있었다.<br/>
+그렇다면 **Named Export**와 **Default Export**의 차이는 무엇이고, 어떤 상황에서 각각을 사용해야 할까?
 
 ---
 
@@ -33,10 +33,10 @@ import { Button } from './Button'; // 이름이 정확히 일치해야 함
 import Banana from './withAuth'; // 실제 값은 withAuth지만 이름을 Banana로 사용 가능
 ```
 
-📌 주의할 점
-Default export한 값을 named import 방식({})으로 가져오려 하면 에러가 발생한다. 
+📌 주의할 점<br/>
+Default export한 값을 named import 방식(`{}`)으로 가져오려 하면 에러가 발생한다. 
 
-예시 화면<br/>
+예시 화면
 ![hoc 캡쳐본](/images/posts/Dev/circular-ref-error/hoc.png)
 ![hoc 폴더 내의 index.tsx 캡쳐본](/images/posts/Dev/circular-ref-error/hoc-index.png)
 
@@ -49,7 +49,6 @@ Named Export는 여러 유틸 함수, HOC 등 여러 개의 모듈을 하나의 
 
 사실 Default Export를 여러 파일에서 사용할 경우, import 문이 늘어나서 가독성이 떨어질 수 있다는 단점이 있다.
 아래와 같이 한 줄에 import가 안 되고, 중복된 경로가 반복되면 가독성이 떨어지고 유지보수가 어려워진다.
-
 ![Default Export 캡쳐본](/images/posts/Dev/circular-ref-error/default_export.png)
 
 | 구분             | Default Export                                 | Named Export                                             |
@@ -74,10 +73,18 @@ withLayout.tsx → BaseLayout (import { BaseLayout } from '@/components/layouts'
 BaseLayout.tsx → Column (import { Column } from '@/styles/layouts/Layout')
 ➡️ 결국 Column이 BaseLayout을 참조하고, BaseLayout이 다시 Column을 참조하는 순환 참조 발생!
 ```
+
+현재 hoc/index.tsx에서 withDefaultProps, withAuth, withLayout을 한꺼번에 export하고 있기 때문에,
+어느 한 곳에서 withDefaultProps만 import하더라도 hoc 폴더 내부 전체가 로드된다.
+즉, withDefaultProps를 가져오는 것만으로 withLayout도 같이 불려오면서,
+결과적으로 withLayout.tsx 내부의 BaseLayout이 불려와 순환 참조가 발생한 것이었다!<br/>
 이처럼 하나의 모듈이 다른 모듈을 참조하고, 다시 자신이 참조되는 구조가 형성되면 런타임 시 참조 에러가 발생할 수 있다.
 
-리액트 공식문서(https://ko.react.dev/learn/importing-and-exporting-components)에서도 설명하듯, export 방식에 따라 import 방식이 달라지며,
-컴포넌트 명명 규칙과 구조 관리가 중요하다는 점을 꼭 기억하자!
-나중에 디버깅과 유지보수를 편하게 하기 위해서는 export 방식을 의도적으로 잘 설계하는 것이 중요하다. 이번 경험을 통해 export 방식의 선택과 순환 참조를 예방하는 설계의 중요성을 제대로 체감했다✨
+🔧 해결책<br/>
+hoc/index.tsx를 통해 한꺼번에 export하지 않고, 필요한 곳에서 개별적으로 import하도록 변경하여 순환 참조 에러를 해결할 수 있었다.
+
+[리액트 공식문서](https://ko.react.dev/learn/importing-and-exporting-components)에서도 설명하듯, export 방식에 따라 import 방식이 달라지며, 컴포넌트 명명 규칙과 구조 관리가 중요하다는 점을 꼭 기억하자!
+나중에 디버깅과 유지보수를 편하게 하기 위해서는 export 방식을 의도적으로 잘 설계하는 것이 중요하다.<br/>
+이번 경험을 통해 export 방식의 선택과 순환 참조를 예방하는 설계의 중요성을 제대로 체감했다✨
 
 ---
