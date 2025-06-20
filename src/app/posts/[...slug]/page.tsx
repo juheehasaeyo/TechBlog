@@ -3,7 +3,6 @@ import Mdx from "@/components/Mdx";
 import { PostComments } from "@/components/PostComments";
 import { USER_INFORMATIONS } from "@/constants/data";
 import convertDate from "@/utils/convertDate";
-import Giscus from "@giscus/react";
 import { allPosts } from "contentlayer/generated";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
