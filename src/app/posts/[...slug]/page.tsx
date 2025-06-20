@@ -2,6 +2,7 @@ import Badge from "@/components/Badge";
 import Mdx from "@/components/Mdx";
 import { USER_INFORMATIONS } from "@/constants/data";
 import convertDate from "@/utils/convertDate";
+import Giscus from "@giscus/react";
 import { allPosts } from "contentlayer/generated";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -75,6 +76,18 @@ const PostPage = async ({ params }: PostProps) => {
       </div>
       <hr className="my-8" />
       <Mdx code={post.body.code} />
+      <Giscus
+        repo="juheehasaeyo/TechBlog"
+        repoId="R_kgDOMWKrJg"
+        category="Announcements"
+        categoryId="DIC_kwDOMWKrJs4Crw5x"
+        mapping="pathname"
+        reactionsEnabled="1"
+        emitMetadata="0"
+        inputPosition="top"
+        theme="preferred_color_scheme"
+        lang="ko"
+      />
     </section>
   );
 };
