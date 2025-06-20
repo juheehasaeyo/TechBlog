@@ -1,6 +1,5 @@
 import Badge from "@/components/Badge";
 import Mdx from "@/components/Mdx";
-import { PostComments } from "@/components/PostComments";
 import { USER_INFORMATIONS } from "@/constants/data";
 import convertDate from "@/utils/convertDate";
 import { allPosts } from "contentlayer/generated";
@@ -76,7 +75,6 @@ const PostPage = async ({ params }: PostProps) => {
       </div>
       <hr className="my-8" />
       <Mdx code={post.body.code} />
-      <PostComments />
     </section>
   );
 };
