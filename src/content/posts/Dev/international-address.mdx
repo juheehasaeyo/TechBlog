@@ -65,10 +65,12 @@ const AddressInput = <TFormInput extends FieldValues = FieldValues>({
 기존에는 register와 useController를 함께 사용했는데, 이는 같은 필드를 중복 등록하게 되어 충돌이 발생할 수 있다.
 공식 문서에 따르면 useController는 내부적으로 해당 필드를 register하기 때문에 둘 중 하나만 사용해야 한다고 안내하고 있다.<br/>
 
-또한 useController의 rules 옵션으로 유효성 검사도 처리할 수 있기 때문에, 굳이 register를 병행하지 않아도 된다. 이러한 이유로 AddressInput 컴포넌트에서 register 관련 코드를 제거하고, useController만으로 필드 등록과 유효성 검사를 관리하도록 수정했다!<br/>
+또한 useController의 rules 옵션으로 유효성 검사도 처리할 수 있기 때문에, 굳이 register를 병행하지 않아도 된다. 이러한 이유로 AddressInput 컴포넌트에서 register 관련 코드를 제거하고, useController만으로 필드 등록과 유효성 검사를 관리하도록 수정했다!  
 해당 내용은 [react-hook-form 공식문서](https://react-hook-form.com/docs/usecontroller)에 나와있다.
-더 구체적으로는 아래의 캡쳐본을 보자!<br/>
-[register 캡쳐본](/images/posts/Dev/international-address/register_캡쳐.png)
+
+더 구체적으로는 아래의 캡쳐본을 보자!
+
+![register 캡쳐본](/images/posts/Dev/international-address/register_캡쳐.png)
 ---
 
 
