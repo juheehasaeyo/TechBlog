@@ -17,7 +17,7 @@ React Hook Form과 **useForm**, **useController**를 활용해 **국가별 입�
 
 ## useController를 선택한 이유 — register와의 차이
 
-### 1. 커스텀 컴포넌트와의 자연스러운 연결
+### 커스텀 컴포넌트와의 자연스러운 연결
 `AddressInput`처럼 스타일과 로직을 캡슐화한 **커스텀 Input 컴포넌트**를 만들 때는 `register`만으로는 제약이 있었다.  
 `useController`는 react-hook-form과 컴포넌트를 바인딩하면서도 `value`, `onChange`, `error` 같은 속성을 직접 제어할 수 있다.
 
@@ -29,18 +29,27 @@ const {
 ```
 이 구조 덕분에 value를 직접 바인딩하고, onChange에서 패턴 검증 및 maxLength 로직을 추가하며, error를 UI에 바로 반영할 수 있다.
 
-### 2. register와 중복 등록 문제 해결
-이전에는 register와 useController를 동시에 사용했는데, 이는 같은 필드를 중복 등록하게 되어 충돌이 발생할 수 있다.
+### register와 중복 등록 문제 해결
+이전에는 register와 useController를 동시에 사용했는데, 이는 같은 필드를 중복 등록하게 되어 충돌이 발생할 수 있었다.
 [공식 문서](https://react-hook-form.com/docs/usecontroller)에 따르면 useController는 내부적으로 register를 호출하므로 **둘 중 하나만 사용해야 한다**고 나와있다.
 
 더 구체적으로는 아래의 캡쳐본을 보자!
-
 ![register 캡쳐본](/images/posts/Dev/international-address/register_캡쳐.png)
 
-이에 따라 AddressInput에서는 register 관련 코드를 제거하고, useController만으로 필드 등록과 유효성 검사를 관리하도록 수정했다.
-또한 rules 옵션으로 `required`, `pattern`, `maxLength` 등을 처리할 수 있어 별도의 register 호출이 필요하지 않다. (ex. 중국 신분증 번호 정규식 `/^[0-9]{17}[0-9Xx]$`/을 rules에 직접 지정)
-이러한 이유로 아래처럼 register 코드를 제거하고, useController만으로 필드 등록과 유효성 검사를 관리하도록 수정했다!  
-```
+따라서 AddressInput에서는 register 코드를 제거하고, useController만으로 필드 등록과 유효성 검사를 관리하도록 리팩토링했다!
+특히 국가별 배송지 입력처럼 정책이 복잡하게 달라지는 경우, **rules** 옵션에 `required`, `pattern`, `maxLength` 등을 한 곳에 정의해두면 확장성이 커진다.
+
+예를 들어:
+- 한국: Daum 주소검색 API 연동 (모바일: 팝업 / PC: 임베드)
+- 중국: 신분증 번호 입력 필드 및 우편번호 검색 (china-division 패키지 사용)
+- 일본: 우편번호 검색 API 연동
+- 브라질: CPF 입력란 재검토 요청 후 제거
+- 태국 & 대만: 국가별 주의사항 조건부 적용
+- 그 외 국가: 유효성 검사 조건 정리 및 공통 파일로 분리
+
+이처럼 rules를 통해 국가별 특화 규칙을 선언적으로 관리할 수 있다는 점이, 단순히 register를 쓰는 것보다 유지보수성과 가독성 측면에서 훨씬 유리했다.
+
+```ts
 const AddressInput = <TFormInput extends FieldValues = FieldValues>({
   name,
   type = 'text',
@@ -84,18 +93,6 @@ const AddressInput = <TFormInput extends FieldValues = FieldValues>({
 <video src="/images/posts/Dev/international-address/중국_배송지_등록.mp4" controls width="100%" />
 
 공통 UI는 재사용하고, 국가별 정책은 별도 컴포넌트로 분리해 **가독성과 유지보수성**을 확보하였으며, 유효성 검사 로직도 국가별로 분기 처리하여 **사용자 경험을 개선**했다.
-
-## 📦 국가별 주요 처리 내용
-
-- 🇰🇷 **한국**: Daum 주소검색 API 연동 (모바일: 팝업 / PC: 임베드)
-- 🇨🇳 **중국**: 신분증 번호 입력 필드 및 우편번호 검색 (china-division 패키지 사용)
-- 🇯🇵 **일본**: 우편번호 검색 API 연동
-- 🇧🇷 **브라질**: CPF 입력란 재검토 요청 후 제거
-- 🇹🇭🇹🇼 **태국·대만**: 국가별 주의사항 조건부 적용
-- **그 외 국가**: 유효성 검사 조건 정리 및 공통 파일로 분리
-
-
-
 
 ---
 
