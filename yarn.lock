@@ -1004,10 +1004,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/env@npm:15.2.3":
-  version: 15.2.3
-  resolution: "@next/env@npm:15.2.3"
-  checksum: 10/976f9e85b7e4e1b4bce16c06c4528a1febfce3ae20e7935440900bc4befd650257bf5a71c94b6c9391e251c6ee6080c868c759c1becaacddd25b280751013b2c
+"@next/env@npm:15.2.6":
+  version: 15.2.6
+  resolution: "@next/env@npm:15.2.6"
+  checksum: 10/7d09add4887a433d3b27a41d21e4b1b46a2e58d5e2c030f8db2e832b1cfc8cd7d47a56359b6ca926178ceca67fce2acd94787cbd27656882c3cec151dc6262ab
   languageName: node
   linkType: hard
 
@@ -1020,58 +1020,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-arm64@npm:15.2.3":
-  version: 15.2.3
-  resolution: "@next/swc-darwin-arm64@npm:15.2.3"
+"@next/swc-darwin-arm64@npm:15.2.5":
+  version: 15.2.5
+  resolution: "@next/swc-darwin-arm64@npm:15.2.5"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-x64@npm:15.2.3":
-  version: 15.2.3
-  resolution: "@next/swc-darwin-x64@npm:15.2.3"
+"@next/swc-darwin-x64@npm:15.2.5":
+  version: 15.2.5
+  resolution: "@next/swc-darwin-x64@npm:15.2.5"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-gnu@npm:15.2.3":
-  version: 15.2.3
-  resolution: "@next/swc-linux-arm64-gnu@npm:15.2.3"
+"@next/swc-linux-arm64-gnu@npm:15.2.5":
+  version: 15.2.5
+  resolution: "@next/swc-linux-arm64-gnu@npm:15.2.5"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-musl@npm:15.2.3":
-  version: 15.2.3
-  resolution: "@next/swc-linux-arm64-musl@npm:15.2.3"
+"@next/swc-linux-arm64-musl@npm:15.2.5":
+  version: 15.2.5
+  resolution: "@next/swc-linux-arm64-musl@npm:15.2.5"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-gnu@npm:15.2.3":
-  version: 15.2.3
-  resolution: "@next/swc-linux-x64-gnu@npm:15.2.3"
+"@next/swc-linux-x64-gnu@npm:15.2.5":
+  version: 15.2.5
+  resolution: "@next/swc-linux-x64-gnu@npm:15.2.5"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-musl@npm:15.2.3":
-  version: 15.2.3
-  resolution: "@next/swc-linux-x64-musl@npm:15.2.3"
+"@next/swc-linux-x64-musl@npm:15.2.5":
+  version: 15.2.5
+  resolution: "@next/swc-linux-x64-musl@npm:15.2.5"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-win32-arm64-msvc@npm:15.2.3":
-  version: 15.2.3
-  resolution: "@next/swc-win32-arm64-msvc@npm:15.2.3"
+"@next/swc-win32-arm64-msvc@npm:15.2.5":
+  version: 15.2.5
+  resolution: "@next/swc-win32-arm64-msvc@npm:15.2.5"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-win32-x64-msvc@npm:15.2.3":
-  version: 15.2.3
-  resolution: "@next/swc-win32-x64-msvc@npm:15.2.3"
+"@next/swc-win32-x64-msvc@npm:15.2.5":
+  version: 15.2.5
+  resolution: "@next/swc-win32-x64-msvc@npm:15.2.5"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -6241,19 +6241,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:^15.2.3":
-  version: 15.2.3
-  resolution: "next@npm:15.2.3"
+"next@npm:15.2.6":
+  version: 15.2.6
+  resolution: "next@npm:15.2.6"
   dependencies:
-    "@next/env": "npm:15.2.3"
-    "@next/swc-darwin-arm64": "npm:15.2.3"
-    "@next/swc-darwin-x64": "npm:15.2.3"
-    "@next/swc-linux-arm64-gnu": "npm:15.2.3"
-    "@next/swc-linux-arm64-musl": "npm:15.2.3"
-    "@next/swc-linux-x64-gnu": "npm:15.2.3"
-    "@next/swc-linux-x64-musl": "npm:15.2.3"
-    "@next/swc-win32-arm64-msvc": "npm:15.2.3"
-    "@next/swc-win32-x64-msvc": "npm:15.2.3"
+    "@next/env": "npm:15.2.6"
+    "@next/swc-darwin-arm64": "npm:15.2.5"
+    "@next/swc-darwin-x64": "npm:15.2.5"
+    "@next/swc-linux-arm64-gnu": "npm:15.2.5"
+    "@next/swc-linux-arm64-musl": "npm:15.2.5"
+    "@next/swc-linux-x64-gnu": "npm:15.2.5"
+    "@next/swc-linux-x64-musl": "npm:15.2.5"
+    "@next/swc-win32-arm64-msvc": "npm:15.2.5"
+    "@next/swc-win32-x64-msvc": "npm:15.2.5"
     "@swc/counter": "npm:0.1.3"
     "@swc/helpers": "npm:0.5.15"
     busboy: "npm:1.6.0"
@@ -6298,7 +6298,7 @@ __metadata:
       optional: true
   bin:
     next: dist/bin/next
-  checksum: 10/91714227d09ad1a41340bfa10a2ad212fa372d5d6255dd14cc47cccb4795a04c8ac08a8b10998d2d7bf90eeca46668091d4a0398ec11224310fd96a484bca867
+  checksum: 10/17c5b116a14b658f441e0f82f05509b58e633d76f7e026c63e0a8bca3253b96bbfa7165114725abf25ff647c7c4998c6adbed03d0394f05c1980c29325e14166
   languageName: node
   linkType: hard
 
@@ -8514,7 +8514,7 @@ __metadata:
     framer-motion: "npm:^11.0.8"
     hygen: "npm:^6.2.11"
     iconoir-react: "npm:^7.7.0"
-    next: "npm:^15.2.3"
+    next: "npm:15.2.6"
     next-contentlayer: "npm:^0.3.4"
     postcss: "npm:^8"
     prettier: "npm:^3.2.5"
