@@ -14,7 +14,7 @@ yarn add @svgr/webpack
 ```
 
 SVG 색상을 동적으로 변경하기 위한 설정이었지만, 이를 적용하는 과정에서 예상치 못한 문제가 발생했다!
-SVGR 설정을 추가하기 위해 next.config.ts를 **next.config.mjs**로 변경하고 아래 내용을 추가했다.
+next.config.mjs에 아래 설정을 추가한 직후, 기존에는 잘 작동하던 Image 컴포넌트에서 에러가 발생했다.
 
 ```js
 webpack: (config) => {
@@ -26,14 +26,14 @@ webpack: (config) => {
         return config;
     },
 ```
-하지만 이 설정을 적용한 직후, 기존에는 잘 작동하던 Image 컴포넌트에서 갑자기 에러가 발생했다.<br/>
+
 ```vbnet
 Error: Image with src "..." is missing required "width" property.
 ```
 
 ![에러 캡쳐본](/images/posts/Dev/clonecoding-review/Image에러창_캡쳐.png)
 
-Next.js Image 컴포넌트에서 **width 속성이 누락되었다**는 오류가 발생한 것이다.
+Next.js Image 컴포넌트에서 `width` **속성이 누락되었다**는 오류가 발생한 것이다.
 
 ---
 
@@ -41,12 +41,13 @@ Next.js Image 컴포넌트에서 **width 속성이 누락되었다**는 오류�
 CGV 웹사이트 클론코딩을 하면서 NavBar의 `navItems`에 들어갈 SVG 아이콘을 컴포넌트 형태로 사용하기 위해 SVGR을 도입했다.
 ![svg 컴포넌트화 캡쳐본](/images/posts/Dev/clonecoding-review/svg컴포넌트화.png)
 
-SVGR 적용 전에는 아래처럼 Image 컴포넌트에 SVG 경로만 넣어도 정상적으로 렌더링되었다.
-하지만 SVGR을 적용한 이후에는 동일한 코드에서 `width`와 `height`가 없다는 에러가 발생했다.
+SVGR 적용 전에는 아래처럼 Image 컴포넌트의 src에 SVG 경로 문자열을 전달해도 정상적으로 렌더링되었다.
+하지만 SVGR을 적용한 이후에는 SVG를 컴포넌트로 import해서 사용하게 되었고, 그 과정에서 동일한 코드에서 width와 height가 없다는 에러가 발생했다.
 ![Image태그 캡쳐본](/images/posts/Dev/clonecoding-review/Image태그_너비높이_없을때.png) 
 
 결국 문제의 원인은 Image 컴포넌트가 요구하는 필수 속성인 width와 height를 지정하지 않았기 때문이었다.<br/>
-`내가 알고 있는 Image 컴포넌트에서는 src와 alt만 필수값인데...!?`
+
+> 내가 알고 있는 Image 컴포넌트에서는 src와 alt만 필수값인데...!?
 
 
 ### 이유: Image 컴포넌트의 src에는 "이미지 정보"만 올 수 있다
@@ -54,37 +55,43 @@ SVGR 적용 전에는 아래처럼 Image 컴포넌트에 SVG 경로만 넣어도
 문제는 **Image 컴포넌트의 `src`에 전달한 값의 형태**였다.
 
 Next.js의 Image 컴포넌트는 단순히 이미지를 그리는 태그가 아니라,
-이미지 최적화를 수행하기 위해 width/height 같은 메타데이터를 필요로 하는 컴포넌트다.
+이미지 최적화를 수행하기 위해 width와 height 같은 메타데이터를 필요로 하는 컴포넌트다.
 
 그래서 src에는 다음과 같은 값만 전달할 수 있다.
 
-- 정적 이미지 경로 문자열 (`"/assets/imgs/img_logo.png"`)
+- 정적 이미지 경로 문자열 (`"/assets/icons/ic_logo.svg"`)
 - `import`로 불러온 정적 이미지 객체<br/>
-(빌드 시 width/height 메타데이터를 포함)
+(빌드 시점에 width와 height 메타데이터를 포함)
 
-즉, 에러의 본질은 SVGR 때문이 아니라 Image 컴포넌트의 **src에 React 컴포넌트를 전달**한 것이었다.
+결국 이번 오류는 SVGR 자체가 원인이 아니라, next/image가 기대하는 src 타입(이미지 URL 또는 Static Image Import)이 아닌 값을 전달한 데서 발생했다.
 
+#### import vs 문자열 경로의 차이
+`import`로 가져온 이미지(png/jpg/webp 등)는 빌드 타임에 Next.js가 width/height 같은 메타데이터를 알고 있기 때문에 크기 자동 추론이 가능하다. 그래서 경우에 따라 width와 height를 생략해도 동작할 수 있다.
+반면 문자열 경로로 전달하는 경우 src는 단순한 이미지 URL이다.
+이 경우 Next.js가 해당 파일의 크기를 빌드 타임에 항상 알 수 있는 것은 아니기 때문에, fill을 사용하지 않는다면 width와 height를 명시하는 것이 안전하다.
+
+Next.js [공식 문서](https://nextjs.org/docs/app/api-reference/components/image#width-and-height)에서도 Image 컴포넌트는 `fill` 속성을 사용하지 않는 경우 `width`와 `height`를 필수로 지정해야 한다고 설명하고 있다.
 ---
 
 ### 해결방법
-1. **SVG를 Image로 쓰고 싶다면**<br/>
+1. **SVG를 Image컴포넌트로 사용하고 싶다면**<br/>
 정적 경로 또는 import한 이미지 객체를 src로 전달한다.
 
 ```tsx
-import ImgLogoCGV from "@/assets/imgs/img_cgv.png";
+import IcLogoCGV from "@/assets/icons/ic_cgv.svg";
 
-<Image src={ImgLogoCGV} alt="cgv 로고" width={24} height={24}/>  // ✅
-<Image src={ImgLogoCGV} alt="cgv 로고" fill />  // ✅
-<Image src={"/assets/imgs/img_cgv.png"} alt="cgv 로고" />  // ✅
+<Image src={IcLogoCGV} alt="cgv 로고" width={24} height={24}/>  // ✅
+<Image src={IcLogoCGV} alt="cgv 로고" fill />  // ✅
+<Image src={"/assets/icons/ic_cgv.svg"} alt="cgv 로고" />  // ✅
 ```
-반대로, 다음과 같은 방식은 사용할 수 없다.
+반대로, 다음과 같은 방식은 사용할 수 없다. <br/>
+src에는 React 컴포넌트가 아닌 "이미지 정보"만 전달할 수 있기 때문이다.
 
 ```tsx
-import ImgLogoCGV from "@/assets/imgs/img_cgv.png";
+import IcLogoCGV from "@/assets/icons/ic_cgv.svg";
 
-<Image src={<ImgLogoCGV />} alt="cgv 로고" /> // ❌
+<Image src={<IcLogoCGV />} alt="cgv 로고" /> // ❌
 ```
-src에는 React 컴포넌트가 아닌 "이미지 정보"만 전달할 수 있기 때문이다.
 
 2. **SVG를 컴포넌트로 쓰고 싶다면**<br/>
 Image 컴포넌트를 사용하지 말고 직접 렌더링한다.
@@ -110,14 +117,13 @@ Next.js는 기기 크기에 맞는 최적의 이미지 크기를 자동으로 �
 3. **SVG는 원본 크기 정보가 없기 때문** <br/>
 SVG는 벡터 이미지라 원본 크기 정보가 없다. SVGR을 적용하면 React 컴포넌트가 되기 때문에 Next.js가 자동으로 크기를 계산할 수 없다.
 
-Next.js [공식문서](https://nextjs.org/docs/app/api-reference/components/image#width-and-height)에서도 Image 컴포넌트는 fill 속성을 사용하지 않는 경우 width와 height를 필수로 지정해야 한다고 설명하고 있다.
+---
 
-정리하면, `Image 컴포넌트는 fill 속성을 사용할 때를 제외하고 width와 height를 반드시 지정해야 한다.`<br/>
-특히 SVGR 적용 이후 SVG는 정적 이미지가 아니라 React 컴포넌트로 다뤄지기 때문에 Image 컴포넌트의 src에는 사용할 수 없다는 점을 주의해야 한다.
+정리하면, Image 컴포넌트는 `fill` 속성을 사용할 때를 제외하고 `width`와 `height`를 반드시 지정해야 한다.  
+특히 SVGR을 적용한 SVG는 정적 이미지가 아니라 React 컴포넌트로 취급되기 때문에, Image 컴포넌트의 `src`로 사용할 수 없다는 점에 주의해야 한다.
 
 참고 링크
 - https://coding-haebojago.tistory.com/131
 - https://velog.io/@gkfla668/NextJS-%EC%97%90%EC%84%9C-SVG-%ED%8C%8C%EC%9D%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%EB%B2%95-feat.svgr-%EC%9B%B9%ED%8C%A9-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0
 
-https://nextjs.org/docs/app/api-reference/components/image#width-and-height
 ---
