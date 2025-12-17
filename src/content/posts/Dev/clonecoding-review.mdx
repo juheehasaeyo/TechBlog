@@ -26,13 +26,13 @@ yarn add @svgr/webpack
 
 ```js
 webpack: (config) => {
-        config.module.rules.push({
-            test: /\.svg$/,
-            use: ["@svgr/webpack"],
-        });
+    config.module.rules.push({
+        test: /\.svg$/,
+        use: ["@svgr/webpack"],
+    });
 
-        return config;
-    },
+    return config;
+},
 ```
 
 ### 또 다른 문제: Image 컴포넌트에서 발생한 width 에러
@@ -108,8 +108,8 @@ import ImgLogoCGV from "@/assets/icons/ic_cgv.jpg";
 import ImgLogoCGV from "@/assets/icons/ic_cgv.jpg";
 
 // 확장자가 무엇이든 직접 경로 지정했으면 width/height 또는 fill 속성 필수
-<Image src={'/assets/icons/ic_cgv.jpg'} alt="cgv 로고" /> // ❌
-<Image src={"/assets/icons/ic_ticket.svg"} alt="티켓" />  // ❌
+<Image src='/assets/icons/ic_cgv.jpg' alt="cgv 로고" /> // ❌
+<Image src='/assets/icons/ic_ticket.svg' alt="티켓" />  // ❌
 
 ```
 
