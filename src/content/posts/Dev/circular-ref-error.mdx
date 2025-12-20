@@ -104,7 +104,11 @@ BaseLayout.tsx → Column (import { Column } from '@/styles/layouts/Layout')
 어느 한 곳에서 withDefaultProps만 import하더라도 hoc 폴더 내부 전체가 로드된다.
 즉, withDefaultProps를 가져오는 것만으로 withLayout도 같이 불려오면서,
 결과적으로 withLayout.tsx 내부의 BaseLayout이 불려와 순환 참조가 발생한 것이었다!<br/>
-이처럼 하나의 모듈이 다른 모듈을 참조하고, 다시 자신이 참조되는 구조가 형성되면 런타임 시 참조 에러가 발생할 수 있다.
+이처럼 하나의 모듈이 다른 모듈을 참조하고, 다시 자신이 참조되는 구조가 형성되면 런타임 시 참조 에러가 발생할 수 있다.<br/>
+
+하단의 다이어그램을 참고하자.
+![순환참조 다이어그램 이미지](/images/posts/Dev/circular-ref-error/순환참조_다이어그램.png)
+
 
 🔧 해결책<br/>
 hoc/index.tsx를 통해 한꺼번에 export하지 않고, 필요한 곳에서 개별적으로 import하도록 변경하여 순환 참조 에러를 해결할 수 있었다.
