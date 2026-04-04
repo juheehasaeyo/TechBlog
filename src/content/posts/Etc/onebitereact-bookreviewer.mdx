@@ -147,11 +147,10 @@ A && B
 왜 이런 일이 발생했을까?!
 ```tsx
 isSoldOut && <SalesBadge />
-```
 
 - isSoldOut이 true → <SalesBadge /> 반환
 - isSoldOut이 undefined → undefined 반환
-
+```
 undefined는 falsy이기 때문에 단락 평가에 의해 undefined가 그대로 반환된다.
 React는 undefined를 렌더링하지 않기 때문에 결과적으로 아무것도 보이지 않게 된다.
 
@@ -166,7 +165,11 @@ React는 undefined를 렌더링하지 않기 때문에 결과적으로 아무것
 - null 또는 undefined → 오른쪽 값 반환
 - 그 외 → 왼쪽 값 반환
 
-즉, undefined ?? <SalesBadge /> → <SalesBadge /> 이므로 정상적으로 렌더링된다.
+즉, 
+```tsx
+undefined ?? <SalesBadge /> → <SalesBadge />
+```
+이므로 정상적으로 렌더링된다.
 
 ---
 
